@@ -84,9 +84,9 @@ public struct ChainMap<TKey,TValue>: IDictionary<TKey,TValue>
     
     public bool IsReadOnly => false;
     
-    public bool ContainsKey(TKey key) => _dictionaries.Any(d => d.ContainsKey(key));
+    public bool ContainsKey(TKey key) => _dictionaries.Any(d => d.ContainsKey(key))||_mainDictionary.ContainsKey(key);
     
-    public bool ContainsValue(TValue value) => _dictionaries.Any(d => d.ContainsValue(value));
+    public bool ContainsValue(TValue value) => _dictionaries.Any(d => d.ContainsValue(value))||_mainDictionary.ContainsValue(value);
     public bool Remove(TKey key)
     {
         if (!_mainDictionary.ContainsKey(key)) return false;
@@ -193,7 +193,7 @@ public struct ChainMap<TKey,TValue>: IDictionary<TKey,TValue>
         _dictionaries.Clear();
     }
 
-    public int CountDictionaries => _dictionaries.Count;
+    public int CountDictionaries => _dictionaries.Count+1;
 
     public ReadOnlyCollection<Dictionary<TKey, TValue>>  GetDictionaries => new (_dictionaries);
     
