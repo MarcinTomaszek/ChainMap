@@ -14,7 +14,7 @@ public struct ChainMap<TKey,TValue>: IDictionary<TKey,TValue>
     {
         if (dictionaries.Length != 0)
         {
-            _mainDictionary = dictionaries[0];
+            _mainDictionary = dictionaries[0]; //first dictionary from list is considered as Main Directory
             if(dictionaries.Length>0)
                 _dictionaries = dictionaries.Skip(1).ToList();
         }
@@ -97,6 +97,12 @@ public struct ChainMap<TKey,TValue>: IDictionary<TKey,TValue>
     
     public bool TryGetValue(TKey key, out TValue value)
     {
+        if (_mainDictionary.ContainsKey(key))
+        {
+            value = _mainDictionary[key];
+            return true;
+        }
+        
         foreach (var dict in _dictionaries)
         {
             if (dict.ContainsKey(key))
